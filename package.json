@@ -1,0 +1,23 @@
+{
+  "name": "deviousmessager-server",
+  "version": "1.0.0",
+  "description": "DeviousMessager is a encrypted chat app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Virusnest/DeviousMessager-Server.git"
+  },
+  "author": "Virusnest",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Virusnest/DeviousMessager-Server/issues"
+  },
+  "homepage": "https://github.com/Virusnest/DeviousMessager-Server#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.5.2"
+  }
+}

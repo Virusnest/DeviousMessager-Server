@@ -12,10 +12,11 @@
         #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; background: #585b70; color: #cdd6f4; }
         #input:focus { outline: none; }
         #form > button { background: #f5e0dc; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #11111b; }
-
+        #typing{padding: 0.25rem; position: fixed; bottom: 10px; left: 10px; right: 0; display: flex; height: 3rem; box-sizing: border-box; font-weight: 400; font-size: 15px;}
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages > li { padding: 0.5rem 1rem; }
         #messages > li:nth-child(odd) { background: #45475a; }
+        
     </style>
   </head>
   <body>
@@ -23,6 +24,7 @@
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
+    <h1 id="typing"></h1>
     <script>
         var socket = io("http://localhost:3000");
         //connect to server
@@ -34,18 +36,33 @@
 
         var form = document.getElementById("form")
         var input = document.getElementById("input")
+        var type = document.getElementById("typing")
         //define variables
         socket.emit('userdata',name)
         //send user data
+        var typing = false
+
+        form.addEventListener("change", function(e){
+          if (input.value != "" && !typing){
+            typeing = true
+            socket.emit('typing', true)
+          }
+          else if(input.value = "" && typing);{
+            typing = false
+            socket.emit('typing', false)
+          }
+        });
+
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if (input.value) {
-                socket.emit('chat message', input.value); //send chat message
-                var item = document.createElement('li');//display chat message
-                item.textContent = name+": "+input.value;
-                messages.appendChild(item);
-                window.scrollTo(0, document.body.scrollHeight);
-                input.value = '';//clear input box
+              socket.emit('chat message', input.value); //send chat message
+              var item = document.createElement('li');//display chat message
+              item.textContent = name+": "+input.value;
+              messages.appendChild(item);
+              window.scrollTo(0, document.body.scrollHeight);
+              input.value = '';//clear input box
             }
         });
         //add listener for input box and button
@@ -65,6 +82,14 @@
             window.scrollTo(0, document.body.scrollHeight);
         });
         //chat message listener
+
+        socket.on('typing',function(state,name){
+          if (state){
+            type.innerText=name+" Is Typing"
+          }else{
+            type.innerText=""
+          }
+        });
     </script>
   </body>
 </html>

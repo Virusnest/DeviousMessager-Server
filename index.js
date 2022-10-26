@@ -23,6 +23,11 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
     io.emit('sysmessage',name+" Disconected", "#f38ba8")
   });
+
+  socket.on('typing',(v)=>{
+    socket.broadcast.emit('typing',v,name)
+  });
+
   socket.on('userdata',(uname)=>{
     name=uname
     //get user data

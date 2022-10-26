@@ -25,11 +25,11 @@
     </form>
     <script>
         var socket = io("http://localhost:3000");
-        
+        //connect to server
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
         });
-            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+        //get query string to send to server
         let name = params.name;
 
         var form = document.getElementById("form")

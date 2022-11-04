@@ -23,11 +23,13 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
     io.emit('sysmessage',name+" Disconected", "#f38ba8")
   });
+  //listen for disconnect then bordcast disconnect message
 
   socket.on('typing',(v)=>{
     socket.broadcast.emit('typing',v,name)
+    console.log(v,name)
   });
-
+  //listen for typing packet then relay to other users
   socket.on('userdata',(uname)=>{
     name=uname
     //get user data

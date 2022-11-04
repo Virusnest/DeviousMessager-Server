@@ -12,7 +12,7 @@
         #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; background: #585b70; color: #cdd6f4; }
         #input:focus { outline: none; }
         #form > button { background: #f5e0dc; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #11111b; }
-        #typing{padding: 0.25rem; position: fixed; bottom: 10px; left: 10px; right: 0; display: flex; height: 3rem; box-sizing: border-box; font-weight: 400; font-size: 15px;}
+        #typing{padding: 0px 16px; position: fixed; bottom: 35px; left: 0px; right: 0px; display: flex; height: 20px; box-sizing: border-box; font-weight: 400; font-size: 15px; margin: 10px 0px;}
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages > li { padding: 0.5rem 1rem; }
         #messages > li:nth-child(odd) { background: #45475a; }
@@ -42,18 +42,15 @@
         //send user data
         var typing = false
 
-        form.addEventListener("change", function(e){
-          if (input.value != "" && !typing){
-            typeing = true
+        input.addEventListener("change", function(e){
+          if (input.value != ""){
             socket.emit('typing', true)
           }
-          else if(input.value = "" && typing);{
-            typing = false
+          else{
             socket.emit('typing', false)
           }
         });
-
-
+        //look for changes in the mesage box then send typing packet
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if (input.value) {
@@ -82,14 +79,22 @@
             window.scrollTo(0, document.body.scrollHeight);
         });
         //chat message listener
-
-        socket.on('typing',function(state,name){
+        const typers=[];
+        socket.on('typing',function(state,sname){
           if (state){
-            type.innerText=name+" Is Typing"
+            typers.push('as')
           }else{
-            type.innerText=""
+            typers.splice(typers.indexOf(sname),1)
           }
+          //manage table for multiple typers
+          if (typers.length==0){
+            type.innerText=""
+          }else{
+            type.innerText=typers.join(", ")+" Is Typing"
+          }
+          //change typing text
         });
+        //listener for typing hud
     </script>
   </body>
 </html>
